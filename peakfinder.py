@@ -15,7 +15,8 @@ plt.plot(data[2], data[1], 'r')
 plt.axis([0, 2000, 0, max(data[1])*1.2])
 
 fgap = 50   # gap in Hz required between peeks
-peaks, _ = signal.find_peaks(data[1], threshold=10, distance=(fgap/(fs/data[0].size)))
+# peaks, _ = signal.find_peaks(data[1], threshold=0.006, distance=(fgap/(fs/data[0].size)))
+peaks, _ = signal.find_peaks(data[1], prominence=0.003, distance=(fgap/(fs/data[0].size)))
 
 
 plt.figure(3)
