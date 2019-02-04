@@ -3,6 +3,8 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.fftpack import fft
+from scipy import signal
+import math
 import time
 
 
@@ -26,7 +28,11 @@ def animate(_, stream):
 
     line2.set_data(frqlabel, P)
 
-    return line1, line2
+    fgap = 25  # gap in Hz required between peeks
+    peaks, _ = signal.find_peaks(P, prominence=0.2, distance=math.ceil(fgap/(fs/N)))
+    line3.set_data(frqlabel[peaks], P[peaks])
+
+    return line1, line2, line3
 
 
 # set up parameters
@@ -44,6 +50,7 @@ fig.set_size_inches(10, 5)
 
 ax1 = fig.add_subplot(2, 1, 1)
 ax2 = fig.add_subplot(2, 1, 2)
+ax3 = fig.add_subplot(2, 1, 2)
 
 ax1.set_title("Time Series Data (s)")
 ax2.set_title("Frequency Series Data (Hz)")
@@ -56,6 +63,7 @@ ax1.set_ylim(-1, 1)
 
 line1, = ax1.plot([], [], lw=1)
 line2, = ax2.plot([], [], lw=1)
+line3, = ax3.plot([], [], 'kx')
 
 line1.set_color('k')
 line2.set_color('r')
