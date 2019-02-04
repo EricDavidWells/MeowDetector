@@ -11,6 +11,7 @@ def animate(_, stream):
     global ydata, xdata
     rawdata, _ = stream.read(1024)
     data = np.mean(rawdata, axis=1)
+    N = data.size
     ydata = np.roll(ydata, -1024)
     ydata[-1024::] = data
 
@@ -18,7 +19,7 @@ def animate(_, stream):
 
     F = fft(ydata)
     d = round(len(F) / 2)
-    P = abs(F[0:d - 1])
+    P = abs(F[0:d - 1])*2/N
     T = len(ydata) / fs
     k = np.arange(d - 1)
     frqlabel = k / T
@@ -48,7 +49,7 @@ ax1.set_title("Time Series Data (s)")
 ax2.set_title("Frequency Series Data (Hz)")
 
 ax2.set_xlim(0, 2000)
-ax2.set_ylim(0, 500)
+ax2.set_ylim(0, 1)
 
 ax1.set_xlim(-windowsize/fs, 0)
 ax1.set_ylim(-1, 1)

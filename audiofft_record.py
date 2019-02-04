@@ -26,7 +26,7 @@ plt.show()
 # Fourier Transform
 F = fft(data)
 d = round(len(F)/2)
-P = abs(F[0:d-1])
+P = abs(F[0:d-1])*2/data.size
 T = len(data)/fs  # where fs is the sampling frequency
 k = np.arange(d-1)
 frqLabel = k/T
@@ -40,4 +40,4 @@ d = input("do you want to save data? (y/N)")
 if d == "y":
     filename = input("name the file:")
     savedata = np.array([data, P, frqLabel])
-    np.save(filename+"data", savedata)
+    np.save(filename, savedata)
